@@ -1,12 +1,18 @@
 {
   "name": "hardhat-project",
   "scripts": {
-    "compile": "npx hardhat compile"
+    "compile:contracts": "npx hardhat compile",
+    "compile:hasher": "mkdir build; node scripts/compileHasher.js",
+    "compile": "npm run compile:contracts; npm run compile:hasher",
+    "test": "npx hardhat test",
+    "clean": "rm -rf artifacts/ build/ cache/"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.1.1",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@truffle/artifactor": "^4.0.168",
     "chai": "^4.3.6",
+    "circomlibjs": "^0.1.7",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.7.0"
   }

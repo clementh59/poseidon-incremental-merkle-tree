@@ -8,6 +8,17 @@ describe('IncrementalMerkleTree contract', () => {
         Hasher = await ethers.getContractFactory(hasherContract.abi, hasherContract.bytecode);
         hasher = await Hasher.deploy();
     });
+    
+    describe('Deployment', () => {
+        it('should successfully deploy contracts', async () => {
+            const address = await hasher.address
+        
+            expect(address).not.to.equal('')
+            expect(address).not.to.equal(undefined)
+            expect(address).not.to.equal(null)
+            expect(address).not.to.equal(0x0)
+        });
+    })
 
     describe('Poseidon hash', () => {
         it('should hash correctly some key value pairs', async () => {

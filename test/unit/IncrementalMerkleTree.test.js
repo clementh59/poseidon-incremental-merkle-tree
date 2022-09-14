@@ -17,7 +17,12 @@ describe('IncrementalMerkleTree contract', () => {
 
     describe('Deployment', () => {
         it('should successfully deploy contracts', async () => {
-            // todo
+            const address = await incrementalMerkleTree.address
+        
+            expect(address).not.to.equal('')
+            expect(address).not.to.equal(undefined)
+            expect(address).not.to.equal(null)
+            expect(address).not.to.equal(0x0)
         });
 
         it('should set the number of levels passed in the constructor', async () => {

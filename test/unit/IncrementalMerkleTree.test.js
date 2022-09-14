@@ -13,11 +13,9 @@ describe('IncrementalMerkleTree contract', () => {
         hasher = await Hasher.deploy();
         IncrementalMerkleTree = await ethers.getContractFactory('IncrementalMerkleTree');
         incrementalMerkleTree = await IncrementalMerkleTree.deploy(NUMBER_OF_LEVEL, NUMBER_OF_HISTORICAL_ROOTS, hasher.address);
-        [addr1, addr2] = await ethers.getSigners();
     });
 
     describe('Deployment', () => {
-
         it('should successfully deploy contracts', async () => {
             // todo
         });
@@ -32,14 +30,21 @@ describe('IncrementalMerkleTree contract', () => {
             expect(rootHistorySize).to.equal(NUMBER_OF_HISTORICAL_ROOTS);
         });
 
-        // todo: should initialize the tree correctly
+        it('should revert when passing wrong values to the constructor', async () => {
+            // levels should be between 1 and 32
+            await expect(IncrementalMerkleTree.deploy(0, NUMBER_OF_HISTORICAL_ROOTS, hasher.address))
+                .to.be.revertedWith('_levels should be greater than zero');
+            await expect(IncrementalMerkleTree.deploy(33, NUMBER_OF_HISTORICAL_ROOTS, hasher.address))
+                .to.be.revertedWith('_levels should be equal to or less than 32');
+
+            // number of historical root should be between 1 and 2^32
+            await expect(IncrementalMerkleTree.deploy(NUMBER_OF_LEVEL, 0, hasher.address))
+                .to.be.revertedWith('_rootHistorySize should be greater than zero');
+        });
     });
 
     // todo: rename
-    // in the unit test, I'll test if the event are emitted -> OK
-    // I'll test the max number of leaves I can add based on the level -> OK
-    // I'll test the max number of root history
-    describe('Basic scenario', () => {
+    describe('Leaves and roots', () => {
         it('should add leaves and emit events', async () => {
             const tx = await incrementalMerkleTree.addLeaf(123);
             await expect(tx)
@@ -56,7 +61,7 @@ describe('IncrementalMerkleTree contract', () => {
         });
 
         it('should revert when adding more leaves than authorized', async () => {
-            for (let i = 0; i < 2**NUMBER_OF_LEVEL; i++) {
+            for (let i = 0; i < 2 ** NUMBER_OF_LEVEL; i++) {
                 await incrementalMerkleTree.addLeaf(123);
             }
             await expect(incrementalMerkleTree.addLeaf(123)).to.be.revertedWith('Merkle tree is full. No more leaves can be added');
@@ -75,7 +80,7 @@ describe('IncrementalMerkleTree contract', () => {
                 await incrementalMerkleTree.addLeaf(dummyLeafValue);
                 roots.push(await incrementalMerkleTree.getLastRoot());
             }
-            
+
             for (i = 0; i < roots.length; i++) {
                 const isKnownRoot = await incrementalMerkleTree.isKnownRoot(roots[i]);
                 expect(isKnownRoot).to.be.true;
@@ -93,6 +98,18 @@ describe('IncrementalMerkleTree contract', () => {
             }
         });
 
+        it('should initialize the tree with leaves equal to 0x0', async () => {
+            let prevLevelHash = 0x0;
+            // we deploy contracts with levels that go from 1 to 32, and we check that the tree is initialized as expected.
+            for (let i = 1; i <= 32; i++) {
+                incrementalMerkleTree = await IncrementalMerkleTree.deploy(i, NUMBER_OF_HISTORICAL_ROOTS, hasher.address);
+                const root = await incrementalMerkleTree.getLastRoot();
+                expect(root).to.equal(prevLevelHash);
+                prevLevelHash = await hasher["poseidon(uint256[2])"]([prevLevelHash, prevLevelHash]);
+            }
+        });
+
+        // test inside the scalar field
 
     });
 })

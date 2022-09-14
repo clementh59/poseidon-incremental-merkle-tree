@@ -4,6 +4,8 @@
     "compile:contracts": "npx hardhat compile",
     "compile:hasher": "mkdir build; node scripts/compileHasher.js",
     "compile": "npm run compile:contracts; npm run compile:hasher",
+    "test:unit": "npx hardhat test ./test/unit/*.test.js",
+    "test:integration": "npx hardhat test ./test/integration/*.test.js",
     "test": "npx hardhat test",
     "clean": "rm -rf artifacts/ build/ cache/"
   },

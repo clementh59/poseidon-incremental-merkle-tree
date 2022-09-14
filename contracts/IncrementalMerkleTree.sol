@@ -48,22 +48,18 @@ contract IncrementalMerkleTree {
         address _hasherAddress
     ) {
         require(_levels > 0, "_levels should be greater than zero");
-        require(_levels < 32, "_levels should be less than 32");
+        require(_levels <= 32, "_levels should be equal to or less than 32");
         require(
             _rootHistorySize > 0,
             "_rootHistorySize should be greater than zero"
         );
-        require(
-            _rootHistorySize < 4294967296,
-            "_rootHistorySize should be less than 2^32"
-        );
+
         levels = _levels;
         rootHistorySize = _rootHistorySize;
         hasher = IHasher(_hasherAddress);
 
-        // todo: init with zeros
         for (uint32 i = 0; i < _levels; i++) {
-        filledSubtrees[i] = zeros(i);
+            filledSubtrees[i] = zeros(i);
         }
 
         roots[0] = zeros(_levels - 1);
@@ -89,7 +85,6 @@ contract IncrementalMerkleTree {
         inputs[0] = _left;
         inputs[1] = _right;
 
-        //console.log("Hashing %s and %s", _left, _right);
         return hasher.poseidon(inputs);
     }
 
@@ -122,7 +117,6 @@ contract IncrementalMerkleTree {
                 right = currentLevelHash;
             }
             currentLevelHash = hashLeftRight(left, right);
-            //console.log("Gave %s", currentLevelHash);
             currentIndex /= 2;
         }
 
@@ -170,38 +164,38 @@ contract IncrementalMerkleTree {
     }
 
     function zeros(uint256 i) public pure returns (uint256) {
-    if (i == 0) return uint256(0x2fe54c60d3acabf3343a35b6eba15db4821b340f76e741e2249685ed4899af6c);
-    else if (i == 1) return uint256(0x256a6135777eee2fd26f54b8b7037a25439d5235caee224154186d2b8a52e31d);
-    else if (i == 2) return uint256(0x1151949895e82ab19924de92c40a3d6f7bcb60d92b00504b8199613683f0c200);
-    else if (i == 3) return uint256(0x20121ee811489ff8d61f09fb89e313f14959a0f28bb428a20dba6b0b068b3bdb);
-    else if (i == 4) return uint256(0x0a89ca6ffa14cc462cfedb842c30ed221a50a3d6bf022a6a57dc82ab24c157c9);
-    else if (i == 5) return uint256(0x24ca05c2b5cd42e890d6be94c68d0689f4f21c9cec9c0f13fe41d566dfb54959);
-    else if (i == 6) return uint256(0x1ccb97c932565a92c60156bdba2d08f3bf1377464e025cee765679e604a7315c);
-    else if (i == 7) return uint256(0x19156fbd7d1a8bf5cba8909367de1b624534ebab4f0f79e003bccdd1b182bdb4);
-    else if (i == 8) return uint256(0x261af8c1f0912e465744641409f622d466c3920ac6e5ff37e36604cb11dfff80);
-    else if (i == 9) return uint256(0x0058459724ff6ca5a1652fcbc3e82b93895cf08e975b19beab3f54c217d1c007);
-    else if (i == 10) return uint256(0x1f04ef20dee48d39984d8eabe768a70eafa6310ad20849d4573c3c40c2ad1e30);
-    else if (i == 11) return uint256(0x1bea3dec5dab51567ce7e200a30f7ba6d4276aeaa53e2686f962a46c66d511e5);
-    else if (i == 12) return uint256(0x0ee0f941e2da4b9e31c3ca97a40d8fa9ce68d97c084177071b3cb46cd3372f0f);
-    else if (i == 13) return uint256(0x1ca9503e8935884501bbaf20be14eb4c46b89772c97b96e3b2ebf3a36a948bbd);
-    else if (i == 14) return uint256(0x133a80e30697cd55d8f7d4b0965b7be24057ba5dc3da898ee2187232446cb108);
-    else if (i == 15) return uint256(0x13e6d8fc88839ed76e182c2a779af5b2c0da9dd18c90427a644f7e148a6253b6);
-    else if (i == 16) return uint256(0x1eb16b057a477f4bc8f572ea6bee39561098f78f15bfb3699dcbb7bd8db61854);
-    else if (i == 17) return uint256(0x0da2cb16a1ceaabf1c16b838f7a9e3f2a3a3088d9e0a6debaa748114620696ea);
-    else if (i == 18) return uint256(0x24a3b3d822420b14b5d8cb6c28a574f01e98ea9e940551d2ebd75cee12649f9d);
-    else if (i == 19) return uint256(0x198622acbd783d1b0d9064105b1fc8e4d8889de95c4c519b3f635809fe6afc05);
-    else if (i == 20) return uint256(0x29d7ed391256ccc3ea596c86e933b89ff339d25ea8ddced975ae2fe30b5296d4);
-    else if (i == 21) return uint256(0x19be59f2f0413ce78c0c3703a3a5451b1d7f39629fa33abd11548a76065b2967);
-    else if (i == 22) return uint256(0x1ff3f61797e538b70e619310d33f2a063e7eb59104e112e95738da1254dc3453);
-    else if (i == 23) return uint256(0x10c16ae9959cf8358980d9dd9616e48228737310a10e2b6b731c1a548f036c48);
-    else if (i == 24) return uint256(0x0ba433a63174a90ac20992e75e3095496812b652685b5e1a2eae0b1bf4e8fcd1);
-    else if (i == 25) return uint256(0x019ddb9df2bc98d987d0dfeca9d2b643deafab8f7036562e627c3667266a044c);
-    else if (i == 26) return uint256(0x2d3c88b23175c5a5565db928414c66d1912b11acf974b2e644caaac04739ce99);
-    else if (i == 27) return uint256(0x2eab55f6ae4e66e32c5189eed5c470840863445760f5ed7e7b69b2a62600f354);
-    else if (i == 28) return uint256(0x002df37a2642621802383cf952bf4dd1f32e05433beeb1fd41031fb7eace979d);
-    else if (i == 29) return uint256(0x104aeb41435db66c3e62feccc1d6f5d98d0a0ed75d1374db457cf462e3a1f427);
-    else if (i == 30) return uint256(0x1f3c6fd858e9a7d4b0d1f38e256a09d81d5a5e3c963987e2d4b814cfab7c6ebb);
-    else if (i == 31) return uint256(0x2c7a07d20dff79d01fecedc1134284a8d08436606c93693b67e333f671bf69cc);
+    if (i == 0) return uint256(0x0);
+    else if (i == 1) return uint256(0x2098f5fb9e239eab3ceac3f27b81e481dc3124d55ffed523a839ee8446b64864);
+    else if (i == 2) return uint256(0x1069673dcdb12263df301a6ff584a7ec261a44cb9dc68df067a4774460b1f1e1);
+    else if (i == 3) return uint256(0x18f43331537ee2af2e3d758d50f72106467c6eea50371dd528d57eb2b856d238);
+    else if (i == 4) return uint256(0x07f9d837cb17b0d36320ffe93ba52345f1b728571a568265caac97559dbc952a);
+    else if (i == 5) return uint256(0x2b94cf5e8746b3f5c9631f4c5df32907a699c58c94b2ad4d7b5cec1639183f55);
+    else if (i == 6) return uint256(0x2dee93c5a666459646ea7d22cca9e1bcfed71e6951b953611d11dda32ea09d78);
+    else if (i == 7) return uint256(0x078295e5a22b84e982cf601eb639597b8b0515a88cb5ac7fa8a4aabe3c87349d);
+    else if (i == 8) return uint256(0x2fa5e5f18f6027a6501bec864564472a616b2e274a41211a444cbe3a99f3cc61);
+    else if (i == 9) return uint256(0x0e884376d0d8fd21ecb780389e941f66e45e7acce3e228ab3e2156a614fcd747);
+    else if (i == 10) return uint256(0x1b7201da72494f1e28717ad1a52eb469f95892f957713533de6175e5da190af2);
+    else if (i == 11) return uint256(0x1f8d8822725e36385200c0b201249819a6e6e1e4650808b5bebc6bface7d7636);
+    else if (i == 12) return uint256(0x2c5d82f66c914bafb9701589ba8cfcfb6162b0a12acf88a8d0879a0471b5f85a);
+    else if (i == 13) return uint256(0x14c54148a0940bb820957f5adf3fa1134ef5c4aaa113f4646458f270e0bfbfd0);
+    else if (i == 14) return uint256(0x190d33b12f986f961e10c0ee44d8b9af11be25588cad89d416118e4bf4ebe80c);
+    else if (i == 15) return uint256(0x22f98aa9ce704152ac17354914ad73ed1167ae6596af510aa5b3649325e06c92);
+    else if (i == 16) return uint256(0x2a7c7c9b6ce5880b9f6f228d72bf6a575a526f29c66ecceef8b753d38bba7323);
+    else if (i == 17) return uint256(0x2e8186e558698ec1c67af9c14d463ffc470043c9c2988b954d75dd643f36b992);
+    else if (i == 18) return uint256(0x0f57c5571e9a4eab49e2c8cf050dae948aef6ead647392273546249d1c1ff10f);
+    else if (i == 19) return uint256(0x1830ee67b5fb554ad5f63d4388800e1cfe78e310697d46e43c9ce36134f72cca);
+    else if (i == 20) return uint256(0x2134e76ac5d21aab186c2be1dd8f84ee880a1e46eaf712f9d371b6df22191f3e);
+    else if (i == 21) return uint256(0x19df90ec844ebc4ffeebd866f33859b0c051d8c958ee3aa88f8f8df3db91a5b1);
+    else if (i == 22) return uint256(0x18cca2a66b5c0787981e69aefd84852d74af0e93ef4912b4648c05f722efe52b);
+    else if (i == 23) return uint256(0x2388909415230d1b4d1304d2d54f473a628338f2efad83fadf05644549d2538d);
+    else if (i == 24) return uint256(0x27171fb4a97b6cc0e9e8f543b5294de866a2af2c9c8d0b1d96e673e4529ed540);
+    else if (i == 25) return uint256(0x2ff6650540f629fd5711a0bc74fc0d28dcb230b9392583e5f8d59696dde6ae21);
+    else if (i == 26) return uint256(0x120c58f143d491e95902f7f5277778a2e0ad5168f6add75669932630ce611518);
+    else if (i == 27) return uint256(0x1f21feb70d3f21b07bf853d5e5db03071ec495a0a565a21da2d665d279483795);
+    else if (i == 28) return uint256(0x24be905fa71335e14c638cc0f66a8623a826e768068a9e968bb1a1dde18a72d2);
+    else if (i == 29) return uint256(0x0f8666b62ed17491c50ceadead57d4cd597ef3821d65c328744c74e553dac26d);
+    else if (i == 30) return uint256(0x0918d46bf52d98b034413f4a1a1c41594e7a7a3f6ae08cb43d1a2a230e1959ef);
+    else if (i == 31) return uint256(0x1bbeb01b4c479ecde76917645e404dfa2e26f90d0afc5a65128513ad375c5ff2);
     else revert("Index out of bounds");
   }
 }

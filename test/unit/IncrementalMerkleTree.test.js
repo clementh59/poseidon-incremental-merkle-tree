@@ -12,7 +12,11 @@ describe('IncrementalMerkleTree contract', () => {
         Hasher = await ethers.getContractFactory(hasherContract.abi, hasherContract.bytecode);
         hasher = await Hasher.deploy();
         IncrementalMerkleTree = await ethers.getContractFactory('IncrementalMerkleTree');
-        incrementalMerkleTree = await IncrementalMerkleTree.deploy(NUMBER_OF_LEVEL, NUMBER_OF_HISTORICAL_ROOTS, hasher.address);
+        incrementalMerkleTree = await IncrementalMerkleTree.deploy(
+            NUMBER_OF_LEVEL, 
+            NUMBER_OF_HISTORICAL_ROOTS, 
+            hasher.address
+            );
     });
 
     describe('Deployment', () => {
@@ -68,7 +72,8 @@ describe('IncrementalMerkleTree contract', () => {
             for (let i = 0; i < 2 ** NUMBER_OF_LEVEL; i++) {
                 await incrementalMerkleTree.addLeaf(123);
             }
-            await expect(incrementalMerkleTree.addLeaf(123)).to.be.revertedWith('Merkle tree is full. No more leaves can be added');
+            await expect(incrementalMerkleTree.addLeaf(123))
+                .to.be.revertedWith('Merkle tree is full. No more leaves can be added');
         });
 
         it("should not find a root that isn't in the history", async () => {
@@ -109,11 +114,22 @@ describe('IncrementalMerkleTree contract', () => {
                 incrementalMerkleTree = await IncrementalMerkleTree.deploy(i, NUMBER_OF_HISTORICAL_ROOTS, hasher.address);
                 const root = await incrementalMerkleTree.getLastRoot();
                 expect(root).to.equal(prevLevelHash);
-                prevLevelHash = await hasher["poseidon(uint256[2])"]([prevLevelHash, prevLevelHash]);
+                prevLevelHash = await hasher['poseidon(uint256[2])']([prevLevelHash, prevLevelHash]);
             }
         });
 
-        // todo: test inside the scalar field
+        it("should not accept a leaf which isn't inside the scalar field", async () => {
+            const aboveScalarField = '21888242871839275222246405745257275088548364400416034343698204186575808495618';
+            const belowScalarField = '21888242871839275222246405745257275088548364400416034343698204186575808495616';
+            await expect(incrementalMerkleTree.addLeaf(aboveScalarField))
+                .to.be.revertedWith('_left should be inside the SNARK field');
+
+            // then, we add a leaf that is above the scalar field
+            await incrementalMerkleTree.addLeaf(belowScalarField);
+
+            await expect(incrementalMerkleTree.addLeaf(aboveScalarField))
+                .to.be.revertedWith('_right should be inside the SNARK field');
+        });
 
     });
 })

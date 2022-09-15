@@ -1,0 +1,30 @@
+name: On push
+
+on:
+  push:
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Compile, test and check prettier
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: npm
+      - name: Install dependencies and build
+        run: npm ci
+      - name: Compile contracts
+        run: npm run compile
+      - name: Run tests
+        run: npm test
+      - name: Check prettier
+        run: npx prettier --check "**/*"

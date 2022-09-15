@@ -48,7 +48,6 @@ describe('IncrementalMerkleTree contract', () => {
         });
     });
 
-    // todo: rename
     describe('Leaves and roots', () => {
         it('should add leaves and emit events', async () => {
             const tx = await incrementalMerkleTree.addLeaf(123);
@@ -114,7 +113,7 @@ describe('IncrementalMerkleTree contract', () => {
             }
         });
 
-        // test inside the scalar field
+        // todo: test inside the scalar field
 
     });
 })

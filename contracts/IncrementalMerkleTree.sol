@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-// todo: remove
-import "hardhat/console.sol";
-
 interface IHasher {
     function poseidon(uint256[2] memory) external pure returns (uint256);
 }

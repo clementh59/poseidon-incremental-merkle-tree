@@ -7,7 +7,8 @@
     "test:unit": "npx hardhat test ./test/unit/*.test.js",
     "test:integration": "npx hardhat test ./test/integration/*.test.js",
     "test": "npx hardhat test",
-    "clean": "rm -rf artifacts/ build/ cache/"
+    "clean": "rm -rf artifacts/ build/ cache/",
+    "prettier": "npx prettier --write ."
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.1.1",
@@ -18,5 +19,8 @@
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.7.0",
     "prettier": "2.7.1"
+  },
+  "dependencies": {
+    "prettier-plugin-solidity": "^1.0.0-beta.24"
   }
 }

@@ -16,7 +16,7 @@ npm i
 
 ### Compile contracts
 
-This command compiles IncrementalMerkleTree.sol as well as the contract that implements the poseidon hash function which is 
+This command compiles IncrementalMerkleTree.sol as well as the contract that implements the poseidon hash function which is
 built using [circomlibjs](https://www.npmjs.com/package/circomlibjs).
 
 ```shell

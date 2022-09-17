@@ -8,7 +8,8 @@
     "test:integration": "npx hardhat test ./test/integration/*.test.js",
     "test": "npx hardhat test",
     "clean": "rm -rf artifacts/ build/ cache/",
-    "prettier": "npx prettier --write ."
+    "prettier": "npx prettier --write .",
+    "deploy": "npx hardhat run scripts/deploy.js --network rinkeby"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.1.1",
@@ -21,6 +22,7 @@
     "prettier": "2.7.1"
   },
   "dependencies": {
+    "dotenv": "^16.0.2",
     "prettier-plugin-solidity": "^1.0.0-beta.24"
   }
 }

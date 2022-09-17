@@ -54,7 +54,7 @@ contract IncrementalMerkleTree {
       filledSubtrees[i] = zeros(i);
     }
 
-    roots[0] = zeros(_levels - 1);
+    roots[0] = zeros(_levels);
   }
 
   /**
@@ -206,6 +206,8 @@ contract IncrementalMerkleTree {
       return uint256(0x0918d46bf52d98b034413f4a1a1c41594e7a7a3f6ae08cb43d1a2a230e1959ef);
     else if (i == 31)
       return uint256(0x1bbeb01b4c479ecde76917645e404dfa2e26f90d0afc5a65128513ad375c5ff2);
+    else if (i == 32)
+      return uint256(0x2f68a1c58e257e42a17a6c61dff5551ed560b9922ab119d5ac8e184c9734ead9);
     else revert('Index out of bounds');
   }
 }

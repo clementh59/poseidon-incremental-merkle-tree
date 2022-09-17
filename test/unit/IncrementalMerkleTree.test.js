@@ -104,7 +104,7 @@ describe('IncrementalMerkleTree contract', () => {
     });
 
     it('should initialize the tree with leaves equal to 0x0', async () => {
-      let prevLevelHash = 0x0;
+      let prevLevelHash = await hasher['poseidon(uint256[2])'](['0x0', '0x0']);
       // we deploy contracts with levels that go from 1 to 32, and we check that the tree is initialized as expected.
       for (let i = 1; i <= 32; i++) {
         incrementalMerkleTree = await IncrementalMerkleTree.deploy(

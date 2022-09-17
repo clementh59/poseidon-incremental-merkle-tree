@@ -5,8 +5,12 @@ const NUMBER_OF_HISTORICAL_ROOTS = 1;
 
 // this object contains the test data obtained via the sismo kv-merkle-tree implementation
 const dataMerkleTree = {
+  emptyTree: {
+    numberOfLevels: 2,
+    root: '0x1069673dcdb12263df301a6ff584a7ec261a44cb9dc68df067a4774460b1f1e1'
+  },
   partiallyFilledTree: {
-    numberOfLevels: 3,
+    numberOfLevels: 2,
     leaves: {
       '0xa76f290c490c70f2d816d286efe47fd64a35800b': 1,
       '0x0085560b24769dac4ed057f1b2ae40746aa9aab6': 1,
@@ -49,9 +53,21 @@ describe('IncrementalMerkleTree contract', () => {
   });
 
   describe('kv-merkle-tree compliancy', () => {
+    it('should return the same root as the library for an empty tree with 2 levels', async () => {
+      incrementalMerkleTree = await IncrementalMerkleTree.deploy(
+        dataMerkleTree.emptyTree.numberOfLevels,
+        NUMBER_OF_HISTORICAL_ROOTS,
+        hasher.address
+      );
+
+      // we retrieve the root and compare it to the one we got from the kv-merkle-tree library
+      const root = await incrementalMerkleTree.getLastRoot();
+      expect(root).to.equal(dataMerkleTree.emptyTree.root);
+    });
+
     it('should return the same root as the library for a partially filled tree with 2 levels', async () => {
       incrementalMerkleTree = await IncrementalMerkleTree.deploy(
-        2,
+        dataMerkleTree.partiallyFilledTree.numberOfLevels,
         NUMBER_OF_HISTORICAL_ROOTS,
         hasher.address
       );

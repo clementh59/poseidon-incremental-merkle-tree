@@ -7,7 +7,7 @@ const NUMBER_OF_HISTORICAL_ROOTS = 1;
 const dataMerkleTree = {
   emptyTree: {
     numberOfLevels: 2,
-    root: '0x1069673dcdb12263df301a6ff584a7ec261a44cb9dc68df067a4774460b1f1e1'
+    root: '0x1069673dcdb12263df301a6ff584a7ec261a44cb9dc68df067a4774460b1f1e1',
   },
   partiallyFilledTree: {
     numberOfLevels: 2,

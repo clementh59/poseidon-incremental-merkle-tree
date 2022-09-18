@@ -49,6 +49,7 @@ Create a `.env` file with your infura API KEY as well as the private key of an a
 [rinkeby](https://rinkeby.etherscan.io/).
 You'll also need to provide the number of level of your merkle tree (the maximum number of values in the merkle tree will be
 2^NUMBER_OF_LEVEL), as well as the number of historical root that the contract will store simultaneously.
+
 ```shell
 INFURA_API_KEY='...'
 PRIVATE_KEY='...'
@@ -57,12 +58,13 @@ NUMBER_OF_HISTORICAL_ROOTS=3
 ```
 
 Then, run the deployment script:
+
 ```shell
 npm run deploy
 ```
 
 The contracts addresses will be printed in the console. Then, you can interact with the deployed contract using the script
-`scripts/interactWithDeployedContract.js`. You'll need to set `CONTRACT_ADDRESS` with the address of your freshly deployed 
+`scripts/interactWithDeployedContract.js`. You'll need to set `CONTRACT_ADDRESS` with the address of your freshly deployed
 merkle tree contract.
 
 ## Areas of improvement

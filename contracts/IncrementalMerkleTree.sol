@@ -50,6 +50,7 @@ contract IncrementalMerkleTree {
     rootHistorySize = _rootHistorySize;
     hasher = IHasher(_hasherAddress);
 
+    // we initialize values as if the tree was filled with zeros
     for (uint32 i = 0; i < _levels; i++) {
       filledSubtrees[i] = zeros(i);
     }
@@ -58,8 +59,12 @@ contract IncrementalMerkleTree {
   }
 
   /**
-        @dev Hash 2 tree leaves, returns poseidon(_left, _right)
-    */
+   * Hash the two values passed in param using the poseidon hash function. The values need to be less than the
+   * SNARK_SCALAR_FIELD.
+   * @param _left
+   * @param _right
+   * @return The value of hash(_left, _right)
+   */
   function hashLeftRight(uint256 _left, uint256 _right) internal view returns (uint256) {
     require(_left < SNARK_SCALAR_FIELD, '_left should be inside the SNARK field');
     require(_right < SNARK_SCALAR_FIELD, '_right should be inside the SNARK field');
@@ -71,7 +76,7 @@ contract IncrementalMerkleTree {
   }
 
   /**
-   * Inserts a leaf in the incremental merkle tree
+   * Inserts a leaf to the incremental merkle tree
    * @param _leaf - The value to insert. It must be less than the snark scalar
    *                field or this function will throw.
    * @return The leaf index
@@ -142,6 +147,16 @@ contract IncrementalMerkleTree {
     return roots[currentRootIndex];
   }
 
+  /**
+   * @param i - The level of the hash we want
+   * @return the value of the level hash if all the leaves are zeros.
+   * e.g if i = 2, we return the root of this tree:
+   *               VALUE_TO_RETURN = hash(x, y)
+   *                 /         \
+   *     x=hash(0x0, 0x0)  y=hash(0x0, 0x0)
+   *          /     \         /     \
+   *        0x0    0x0       0x0    0x0
+   */
   function zeros(uint256 i) public pure returns (uint256) {
     if (i == 0) return uint256(0x0);
     else if (i == 1)

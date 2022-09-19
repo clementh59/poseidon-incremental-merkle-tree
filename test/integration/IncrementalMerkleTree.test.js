@@ -3,7 +3,8 @@ const hasherContract = require('../../build/Hasher.json');
 
 const NUMBER_OF_HISTORICAL_ROOTS = 1;
 
-// this object contains the test data obtained via the sismo kv-merkle-tree implementation
+// this object contains the test data obtained via the sismo kv-merkle-tree implementation. You can find it here:
+// https://github.com/sismo-core/sismo-utils/tree/main/packages/kv-merkle-tree
 const dataMerkleTree = {
   emptyTree: {
     numberOfLevels: 2,
@@ -52,6 +53,7 @@ describe('IncrementalMerkleTree contract', () => {
     IncrementalMerkleTree = await ethers.getContractFactory('IncrementalMerkleTree');
   });
 
+  // it should be compliant with this library: https://github.com/sismo-core/sismo-utils/tree/main/packages/kv-merkle-tree
   describe('kv-merkle-tree compliancy', () => {
     it('should return the same root as the library for an empty tree with 2 levels', async () => {
       incrementalMerkleTree = await IncrementalMerkleTree.deploy(

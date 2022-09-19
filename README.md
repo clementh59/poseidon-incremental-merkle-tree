@@ -4,7 +4,7 @@ This repository contains a smart contract which implements an incremental merkle
 
 ## Algorithm
 
-THe contract uses a table, called filledTrees which stores all the latest left values of each level. Here is how it works 
+THe contract uses a table, called filledTrees which stores all the latest left values of each level. Here is how it works
 with a simple example:
 
 ![Algorithm diagram](documentation/algorithm.excalidraw.png)

@@ -61,8 +61,8 @@ contract IncrementalMerkleTree {
   /**
    * Hash the two values passed in param using the poseidon hash function. The values need to be less than the
    * SNARK_SCALAR_FIELD.
-   * @param _left
-   * @param _right
+   * @param _left - the left value that to hash
+   * @param _right - the right value that to hash
    * @return The value of hash(_left, _right)
    */
   function hashLeftRight(uint256 _left, uint256 _right) internal view returns (uint256) {

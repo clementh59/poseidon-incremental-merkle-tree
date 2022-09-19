@@ -77,8 +77,7 @@ contract IncrementalMerkleTree {
 
   /**
    * Inserts a leaf to the incremental merkle tree
-   * @param _leaf - The value to insert. It must be less than the snark scalar
-   *                field or this function will throw.
+   * @param _leaf - The value to insert. It must be less than the snark scalar field or this function will throw.
    * @return The leaf index
    */
   function addLeaf(uint256 _leaf) public returns (uint256) {

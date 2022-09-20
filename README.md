@@ -67,7 +67,7 @@ npm run deploy
 ```
 
 The contracts addresses will be printed in the console. Then, you can interact with the deployed contract using the script
-`scripts/interactWithDeployedContract.js`. You'll need to set `CONTRACT_ADDRESS` with the address of your freshly deployed
+`scripts/interactWithDeployedContract.js`. You'll need to replace `CONTRACT_ADDRESS` with the address of your freshly deployed
 merkle tree contract.
 
 ## Areas of improvement
